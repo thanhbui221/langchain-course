@@ -8,7 +8,7 @@ from langchain_ollama import ChatOllama
 
 from schemas import AgentResponse
 
-tools = [TavilySearch()]
+tools = [TavilySearchResults(max_results=5)]
 # llm = ChatOpenAI(model="gpt-4o")
 llm = ChatOllama(temperature=0, model="llama3.1")
 
