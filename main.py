@@ -3,13 +3,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from langchain.agents import create_agent
-from langchain_openai import ChatOpenAI
 from langchain_tavily import TavilySearch
+from langchain_ollama import ChatOllama
 
 from schemas import AgentResponse
 
 tools = [TavilySearch()]
-llm = ChatOpenAI(model="gpt-4o")
+# llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOllama(temperature=0, model="llama3.1")
 
 
 agent = create_agent(
@@ -25,7 +26,7 @@ def main():
             "messages": [
                 {
                     "role": "user",
-                    "content": "search for 3 job postings for an ai engineer using langchain in the bay area on linkedin and list their details",
+                    "content": "search for 3 job summer internship postings for a data-related position in singapore on linkedin and list their details",
                 }
             ]
         }
