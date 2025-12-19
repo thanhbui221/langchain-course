@@ -14,8 +14,10 @@ Observation: the result of the action
 Thought: I now know the final answer
 Final Answer: the final answer to the original input question formatted according to format_instructions: {format_instructions}
 
+CRITICAL REMINDER: Your final response MUST start with exactly "Final Answer: " (including the space after the colon) followed by the JSON object. Omitting this prefix will cause processing to fail.
+
 Begin!
 
 Question: {input}
-Thought:{agent_scratchpad}
+Thought: {agent_scratchpad}
 """

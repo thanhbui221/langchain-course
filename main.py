@@ -13,9 +13,9 @@ from langchain_ollama import ChatOllama
 from prompt import REACT_PROMPT_WITH_FORMAT_INSTRUCTIONS
 from schemas import AgentResponse
 
-tools = [TavilySearch(max_results=3)]
+tools = [TavilySearch()]
 output_parser = PydanticOutputParser(pydantic_object=AgentResponse)
-llm = ChatOllama(temperature=0, model="llama3.1")
+llm = ChatOllama(temperature=0, model="qwen3:8b")
 structured_llm = llm.with_structured_output(AgentResponse)
 react_prompt_with_format_instructions = PromptTemplate(
     input_variables=["input", "agent_scratchpad", "tool_names"],
@@ -27,7 +27,7 @@ agent = create_react_agent(
     tools=tools,
     prompt=react_prompt_with_format_instructions,
 )
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True)
 extract_output = RunnableLambda(lambda x: x["output"])
 parse_ouput = RunnableLambda(lambda x: output_parser.parse(x))
 chain = agent_executor | extract_output | parse_ouput
@@ -35,12 +35,9 @@ chain = agent_executor | extract_output | parse_ouput
 def main():
     result = chain.invoke(
         input = {
-            "input": "search for 3 job summer internship postings for a data-related position in singapore on linkedin and list their details"
+            "input": "search for 3 job summer internship postings for a data-related position in singapore on linkedin and list their details."
         }
     )
-    # Access structured response from the agent
-    # structured = result.get("structured_response", None)
-    # print(structured)
     print(result)
 
 
